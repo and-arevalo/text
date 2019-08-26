@@ -21,4 +21,10 @@
     position: absolute;
     top: 0;
     right: 0;
-  }
+}
+
+.textarea-container .badge {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+}

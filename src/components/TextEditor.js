@@ -12,7 +12,9 @@ class TextEditor extends Component {
         this.state = {
             normalText: '',
             htmlText: '',
-            javaText: ''
+            javaText: '',
+            charCount: 0,
+            wordCount: 0
         };
     }
 
@@ -29,11 +31,13 @@ class TextEditor extends Component {
     }
 
     updateText = (event) => {
-        let text = event.target.value;
+        let text = event.target.value.trim();
         this.setState({
-            normalText: text,
+            normalText: event.target.value,
             htmlText: this.encodeHTML(text),
-            javaText: this.encodeJava(text)
+            javaText: this.encodeJava(text),
+            charCount: text.length,
+            wordCount: text.length == 0 ? 0 : text.match(/\S+/g).length
         });
     }
 
@@ -104,9 +108,14 @@ class TextEditor extends Component {
             <div>
                 <Row>
                     <Col>
-                        <Form.Control as="textarea" rows="7" placeholder="Write here..."
-                            value={this.state.normalText}
-                            onChange={this.updateText} />
+                        <div className="textarea-container">
+                            <Form.Control as="textarea" rows="7" placeholder="Write here..."
+                                value={this.state.normalText}
+                                onChange={this.updateText} />
+                            <Badge variant="secondary">
+                                Character Count: {this.state.charCount} &nbsp;|&nbsp; Word Count: {this.state.wordCount}
+                            </Badge>
+                        </div>
                     </Col>
                 </Row>
                 <Row className="buttons-row">
@@ -119,17 +128,17 @@ class TextEditor extends Component {
                 </Row>
                 <Row>
                     <Col>
-                        <h4>HTML</h4>
-                        <div class="textarea-container">
+                        <h4>HTML/XML</h4>
+                        <div className="textarea-container">
                             <Button variant="secondary" onClick={this.copyHTMLToClipboard}>Copy</Button>
-                            <Form.Control as="textarea" rows="7" placeholder="Write here..." readOnly="true"
+                            <Form.Control as="textarea" rows="7" placeholder="Write here..." readOnly={true}
                                 value={this.state.htmlText} />
                         </div>
                     </Col>
                     <Col>
-                        <h4>Java</h4>
-                        <div class="textarea-container">
-                            <Form.Control as="textarea" rows="7" placeholder="Write here..." readOnly="true"
+                        <h4>JS/Java/C</h4>
+                        <div className="textarea-container">
+                            <Form.Control as="textarea" rows="7" placeholder="Write here..." readOnly={true}
                                 value={this.state.javaText} />
                             <Button variant="secondary" onClick={this.copyJavaToClipboard}>Copy</Button>
                         </div>
